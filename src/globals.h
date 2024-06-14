@@ -7,5 +7,6 @@ extern const float GRAVITY;
 extern const int TILESROW;
 extern const float TILESIZE;
 extern const int TILESCOLUMN;
-extern const float BOTTOMOFF;
 extern const char *GAME_TITLE;
+extern const float PLAYER_WIDTH;
+extern const float PLAYER_HEIGHT;

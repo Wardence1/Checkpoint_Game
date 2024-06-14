@@ -5,25 +5,28 @@
 #include "globals.h"
 #include "textures.h"
 
+
 class Player {
     
 public:
-    Player(float x, float y);
+    Player(TileManager tileM);
     float x, y, xVol=0, yVol=0, scale;
     float speed = 8;
-    float jumpStrength = -30;
-    float height, width;
+    float jumpStrength = -22;
     bool grounded = false;
 
 
-    void update(TileManager tileM);
+    void update(TileManager* tileM);
     void draw(sf::RenderWindow* window);
+    void dead(TileManager* tileM);
 
     struct {
-        int x=0;
-        int y=0;
+        float x=0;
+        float y=0;
         bool saved = false;
+        sf::Sprite ghost;
     } savePoint;
+
 
     sf::Sprite sprite;
 };

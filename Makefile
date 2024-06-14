@@ -1,4 +1,5 @@
 all:
+
 	g++ -c src/game.cpp -o build/game.o
 	g++ -c src/main.cpp -o build/main.o
 	g++ -c src/globals.cpp -o build/globals.o

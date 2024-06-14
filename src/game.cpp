@@ -13,8 +13,8 @@ void Game::start() {
 
     EntityManager eManager = EntityManager();
     TileManager tManager = TileManager();
-    Player player = Player(SCREEN_WIDTH/2, 20.0f);
-
+    tManager.loadMap(2); // Have to load map before making the player so the player spawns on the spawn point.
+    Player player = Player(tManager);
     while (running) {
         
         while (window.pollEvent(event))
@@ -26,8 +26,7 @@ void Game::start() {
 
 
         // Update
-        player.update(tManager);
-        tManager.update();
+        player.update(&tManager);
         eManager.update();
 
         // Render

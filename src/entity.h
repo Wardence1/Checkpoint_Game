@@ -6,9 +6,9 @@ class Entity {
 public:
     Entity(int x, int y);
     ~Entity();
-    void update();
-    void draw();
-    void addE(Entity);
+    virtual void update();
+    virtual void draw();
+    virtual void addE(Entity);
 
     //SDL_Rect rect;
     

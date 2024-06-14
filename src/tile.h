@@ -7,11 +7,12 @@
 class Tile {
 
 public:
-    Tile(float x, float y, unsigned type, float slickness=0, bool deadly=false, bool solid=true, bool climbable=false);
+    Tile(float x, float y, unsigned type, float slickness=0, bool deadly=false, bool solid=true, bool climbable=false, bool breakable=false);
+    void deleteT();
 
 
     float x, y, slickness;
-    bool deadly, solid, climbable;
+    bool deadly, solid, climbable, breakable;
     bool tileBelow = false, tileAbove=false, tileLeft=false, tileRight=false;
     unsigned type;
 
