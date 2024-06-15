@@ -6,7 +6,7 @@ x(x), y(y), type(type), slickness(slickness), deadly(deadly), solid(solid), clim
 
     switch (type) {
         case 1: // Rock
-            this->sprite.setTexture(BASIC_TILE_T);
+            this->sprite.setTexture(ROCK_T);
             break;
         case 2: // Lava
             this->sprite.setTexture(LAVA_TILE_T);

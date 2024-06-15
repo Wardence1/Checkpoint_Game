@@ -11,7 +11,7 @@ const float TILESIZE = SCREEN_WIDTH/TILESROW;
 const int TILESCOLUMN = SCREEN_HEIGHT/TILESIZE; // * NOT EXACT * Amount of tiles that can fit on screen in a column at once
 
 const float PLAYER_WIDTH = 30; // const float PLAYER_WIDTH = sprite.getTextureRect().width*scale;
-const float PLAYER_HEIGHT = 51; // const float PLAYER_HEIGHT = sprite.getTextureRect().height*scale;
+const float PLAYER_HEIGHT = 30; // const float PLAYER_HEIGHT = sprite.getTextureRect().height*scale;
 
 
 const char *GAME_TITLE = "Game";

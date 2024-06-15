@@ -87,12 +87,62 @@ void TileManager::checkTiles() {
                 for (int l=0; l<tiles[k].size(); l++) {
 
                     // Below
-                    if (tiles[i][j].y + TILESIZE == tiles[k][l].y && tiles[i][j].x == tiles[k][l].x && tiles[i][j].solid) {
+                    if (tiles[i][j].y + TILESIZE == tiles[k][l].y && tiles[i][j].x == tiles[k][l].x && tiles[i][j].solid || tiles[i][j].y+TILESIZE == SCREEN_HEIGHT) {
                         tiles[i][j].tileBelow = true;
                     }
                     // Above
-                    if (tiles[i][j].y - TILESIZE == tiles[k][l].y && tiles[i][j].x == tiles[k][l].x && tiles[k][l].solid) {
+                    if (tiles[i][j].y - TILESIZE == tiles[k][l].y && tiles[i][j].x == tiles[k][l].x && tiles[k][l].solid || tiles[i][j].y == 0) {
                         tiles[i][j].tileAbove = true;
+                    }
+                    // Right
+                    if (tiles[i][j].x + TILESIZE == tiles[k][l].x && tiles[i][j].y == tiles[k][l].y && tiles[k][l].solid || tiles[i][j].x+TILESIZE == SCREEN_WIDTH) {
+                        tiles[i][j].tileRight = true;
+                    }
+                    // Left
+                    if (tiles[i][j].x - TILESIZE == tiles[k][l].x && tiles[i][j].y == tiles[k][l].y && tiles[k][l].solid || tiles[i][j].x == 0) {
+                        tiles[i][j].tileLeft = true;
+                    }
+
+                    // Setting textures
+
+                    // Rock
+                    if (tiles[i][j].type == 1) {
+                        if (tiles[i][j].tileAbove && tiles[i][j].tileLeft && tiles[i][j].tileRight && !tiles[i][j].tileBelow) // Bottom
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_T);
+                        else if (tiles[i][j].tileBelow && tiles[i][j].tileLeft && tiles[i][j].tileRight && !tiles[i][j].tileAbove) // Top
+                            tiles[i][j].sprite.setTexture(ROCK_TOP_T);
+                        else if (tiles[i][j].tileAbove && tiles[i][j].tileBelow && tiles[i][j].tileRight && !tiles[i][j].tileLeft) // Left
+                            tiles[i][j].sprite.setTexture(ROCK_LEFT_T);
+                        else if (tiles[i][j].tileAbove && tiles[i][j].tileLeft && tiles[i][j].tileBelow && !tiles[i][j].tileRight) // Right
+                            tiles[i][j].sprite.setTexture(ROCK_RIGHT_T);
+
+                        else if (tiles[i][j].tileAbove && tiles[i][j].tileLeft && !tiles[i][j].tileBelow && !tiles[i][j].tileRight) // Bottom - Right
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_RIGHT_T);
+                        else if (tiles[i][j].tileRight && tiles[i][j].tileAbove && !tiles[i][j].tileLeft && !tiles[i][j].tileBelow) // Bottom - Left
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_LEFT_T);
+                        else if (tiles[i][j].tileRight && tiles[i][j].tileLeft && !tiles[i][j].tileAbove && !tiles[i][j].tileBelow) // Bottom - Top
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_TOP_T);
+                        else if (tiles[i][j].tileBelow && tiles[i][j].tileLeft && !tiles[i][j].tileAbove && !tiles[i][j].tileRight) // Top - Right
+                                tiles[i][j].sprite.setTexture(ROCK_TOP_RIGHT_T);
+                        else if (tiles[i][j].tileBelow && tiles[i][j].tileRight && !tiles[i][j].tileLeft && !tiles[i][j].tileAbove) // Top - Right
+                                tiles[i][j].sprite.setTexture(ROCK_TOP_LEFT_T);
+
+                        else if (tiles[i][j].tileLeft && !tiles[i][j].tileRight && !tiles[i][j].tileBelow && !tiles[i][j].tileAbove) // Bottom - Right - Top
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_RIGHT_TOP_T);
+                        else if (tiles[i][j].tileRight && !tiles[i][j].tileLeft && !tiles[i][j].tileBelow && !tiles[i][j].tileAbove) // Bottom - Left - Top
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_TOP_LEFT_T);
+                        else if (tiles[i][j].tileAbove && !tiles[i][j].tileBelow && !tiles[i][j].tileRight && !tiles[i][j].tileLeft) // Bottom - Left - Right
+                            tiles[i][j].sprite.setTexture(ROCK_BOTTOM_RIGHT_LEFT_T);
+                        else if (tiles[i][j].tileBelow && !tiles[i][j].tileRight && !tiles[i][j].tileLeft && !tiles[i][j].tileAbove) // Top - Right - Left
+                            tiles[i][j].sprite.setTexture(ROCK_RIGHT_TOP_LEFT_T);
+
+
+
+                        else if (tiles[i][j].tileAbove && tiles[i][j].tileBelow && tiles[i][j].tileRight) // None
+                            tiles[i][j].sprite.setTexture(ROCK_T);
+                        else if (!tiles[i][j].tileAbove && !tiles[i][j].tileBelow && !tiles[i][j].tileRight && !tiles[i][j].tileLeft) // All
+                            tiles[i][j].sprite.setTexture(ROCK_ALL_T);
+
                     }
                 }
 }

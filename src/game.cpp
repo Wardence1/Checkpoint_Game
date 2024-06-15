@@ -30,7 +30,7 @@ void Game::start() {
         eManager.update();
 
         // Render
-        window.clear({85, 85, 85, 0});
+        window.clear({48, 25, 34, 0});
 
         tManager.draw(&window);
         eManager.draw(&window);

@@ -1,12 +1,14 @@
 #include "player.h"
 
 Player::Player(TileManager tileM) {
-
-    this->scale = 3.0f;
     
     this->sprite.setPosition({x, y});
     this->sprite.setTexture(PLACEHOLDER_GUY_T);
-    this->sprite.scale({3, 3});
+
+    float scaleX = (TILESIZE/sprite.getTextureRect().width/2);
+    float scaleY = (TILESIZE/sprite.getTextureRect().height/2);
+
+    this->sprite.scale({scaleX, scaleY});
 
     // Default spawn point
     if (tileM.spawnPoint.x == 0 && tileM.spawnPoint.y == 0) {
@@ -16,6 +18,9 @@ Player::Player(TileManager tileM) {
 
     this->x = tileM.spawnPoint.x;
     this->y = tileM.spawnPoint.y;
+
+    //std::cout << sprite.getTextureRect().width * scaleX << "\n";
+    //std::cout << sprite.getTextureRect().height * scaleY << "\n";
 }
 
 void Player::update(TileManager* tileM) {
@@ -38,7 +43,7 @@ void Player::update(TileManager* tileM) {
         savePoint.y = y;
         savePoint.saved = true;
         savePoint.ghost = sprite;
-        savePoint.ghost.setColor({255, 255, 255, 60});
+        savePoint.ghost.setColor({255, 255, 255, 123});
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
         if (savePoint.saved) {
@@ -80,9 +85,11 @@ void Player::update(TileManager* tileM) {
 
                         tileM->tiles[i].erase(std::next(tileM->tiles[i].begin(), j));
 
-                        for (int k=0; k < tileM->tiles[i].size(); k++) // Destroy all tiles the player is jumping onto.
+                        for (int k=0; k < tileM->tiles[i].size(); k++) { // Destroy all tiles the player is jumping onto.
                             if (playerR.intersects(tileM->tiles[i][k].sprite.getGlobalBounds()))
                                 tileM->tiles[i].erase(std::next(tileM->tiles[i].begin(), k));
+
+                        }
 
                         tileM->checkTiles();
                         yVol = 0;
@@ -135,5 +142,6 @@ void Player::dead(TileManager* tileM) {
     yVol=0;
     xVol=0;
     savePoint.saved=false;
+    tileM->loadMap(2);
 
 }

@@ -10,7 +10,7 @@ class Player {
     
 public:
     Player(TileManager tileM);
-    float x, y, xVol=0, yVol=0, scale;
+    float x, y, xVol=0, yVol=0;
     float speed = 8;
     float jumpStrength = -22;
     bool grounded = false;
