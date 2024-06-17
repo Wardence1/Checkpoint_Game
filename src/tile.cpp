@@ -1,8 +1,9 @@
 #include "tile.h"
 
-Tile::Tile(float x, float y, unsigned type, float slickness, bool deadly, bool solid, bool climbable, bool breakable) : 
-x(x), y(y), type(type), slickness(slickness), deadly(deadly), solid(solid), climbable(climbable), breakable(breakable) {
+Tile::Tile(float x, float y, unsigned type, float slickness, bool deadly, bool solid, bool climbable, bool breakable, bool bouncy) : 
+x(x), y(y), type(type), slickness(slickness), deadly(deadly), solid(solid), climbable(climbable), breakable(breakable), bouncy(bouncy) {
 
+    // Breakable just mean the tile could break at some point so tiles around it don't draw acting like it's there. So key doors would be breakable.
 
     switch (type) {
         case 1: // Rock
@@ -14,6 +15,9 @@ x(x), y(y), type(type), slickness(slickness), deadly(deadly), solid(solid), clim
         case 3: // Breakable
             this->sprite.setTexture(BREAKABLE_TILE_T);
             break;
+        case 4:
+            this->sprite.setTexture(LOCKED_DOOR_T);
+            break;
         case 9: // Spawn Point
             this->sprite.setTexture(SPAWNER_TILE_T);
             break;
@@ -22,7 +26,7 @@ x(x), y(y), type(type), slickness(slickness), deadly(deadly), solid(solid), clim
             exit(1);
     }
 
-    int width = sprite.getTextureRect().width;
+    width = sprite.getTextureRect().width;
 
     this->sprite.setScale({TILESIZE/width, TILESIZE/width});
     sprite.setPosition({x, y});

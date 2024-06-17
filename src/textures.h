@@ -29,4 +29,7 @@ extern sf::Texture BREAKABLE_TILE_T;
 extern sf::Texture SPAWNER_TILE_T;
 extern sf::Texture PLACEHOLDER_GUY_T;
 
+extern sf::Texture KEY_T;
+extern sf::Texture LOCKED_DOOR_T;
+
 void loadTextures();

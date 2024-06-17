@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "globals.h"
-#include "entityManager.h"
+#include "objectManager.h"
 #include "tileManager.h"
 #include "player.h"
 #include "textures.h"

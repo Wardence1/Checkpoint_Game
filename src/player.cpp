@@ -1,6 +1,7 @@
 #include "player.h"
+#include "tileManager.h"
 
-Player::Player(TileManager tileM) {
+Player::Player() {
     
     this->sprite.setPosition({x, y});
     this->sprite.setTexture(PLACEHOLDER_GUY_T);
@@ -11,13 +12,13 @@ Player::Player(TileManager tileM) {
     this->sprite.scale({scaleX, scaleY});
 
     // Default spawn point
-    if (tileM.spawnPoint.x == 0 && tileM.spawnPoint.y == 0) {
-        tileM.spawnPoint.x = (SCREEN_WIDTH/2)-(PLAYER_WIDTH/2);
-        tileM.spawnPoint.y = (SCREEN_HEIGHT/2)-(PLAYER_HEIGHT/2);
+    if (spawnPoint.x == 0 && spawnPoint.y == 0) {
+        spawnPoint.x = (SCREEN_WIDTH/2)-(PLAYER_WIDTH/2);
+        spawnPoint.y = (SCREEN_HEIGHT/2)-(PLAYER_HEIGHT/2);
     }
 
-    this->x = tileM.spawnPoint.x;
-    this->y = tileM.spawnPoint.y;
+    this->x = spawnPoint.x;
+    this->y = spawnPoint.y;
 
     //std::cout << sprite.getTextureRect().width * scaleX << "\n";
     //std::cout << sprite.getTextureRect().height * scaleY << "\n";
@@ -53,10 +54,11 @@ void Player::update(TileManager* tileM) {
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-        x = tileM->spawnPoint.x;
-        y = tileM->spawnPoint.y;
+        x = spawnPoint.x;
+        y = spawnPoint.y;
         savePoint.saved=false;
-        tileM->loadMap(2);
+        hasKey=false;
+        tileM->loadMap(mapNum, this);
     }
 
     grounded = false;
@@ -80,7 +82,7 @@ void Player::update(TileManager* tileM) {
                     x = tileM->tiles[i][j].x+TILESIZE;
                     xVol = 0;
                 }
-                else if (yVol>0 && y+PLAYER_HEIGHT <= tileM->tiles[i][j].y && !tileM->tiles[i][j].tileAbove && tileM->tiles[i][j].solid) { // Bottom of player
+                else if (yVol>0 && y+PLAYER_HEIGHT <= tileM->tiles[i][j].y && !tileM->tiles[i][j].tileAbove && tileM->tiles[i][j].solid && tileM->tiles[i][j].type != 4) { // Bottom of player
                     if (tileM->tiles[i][j].breakable && yVol > 25) {
 
                         tileM->tiles[i].erase(std::next(tileM->tiles[i].begin(), j));
@@ -100,14 +102,21 @@ void Player::update(TileManager* tileM) {
                         grounded = true;
                     }
                 }
-                else if (yVol<0 && y >= tileM->tiles[i][j].y && !tileM->tiles[i][j].tileBelow && tileM->tiles[i][j].solid) { // Top of player
+                else if (yVol<0 && y >= tileM->tiles[i][j].y && !tileM->tiles[i][j].tileBelow && tileM->tiles[i][j].solid && tileM->tiles[i][j].type != 4) { // Top of player
                     y = tileM->tiles[i][j].y+TILESIZE;
                     yVol = 0;
                 }
                 if (tileM->tiles[i][j].deadly && y+PLAYER_HEIGHT > tileM->tiles[i][j].y) // Done so you can stand over the lava
                     dead(tileM);
+
             }
         }
+
+    if (hasKey) {
+        for (int i=0; i<tileM->tiles[3].size(); i++)
+        tileM->tiles[3][i].sprite.setScale(0, 0);
+        hasKey=false;
+    }
 
 
 
@@ -120,7 +129,19 @@ void Player::update(TileManager* tileM) {
 
     if (y+PLAYER_HEIGHT>=SCREEN_HEIGHT) {dead(tileM);} // Kills the player when the bottom of the screen is hit
     if (x <= 0) {x = 0; xVol=0;}
-    if (x >= SCREEN_WIDTH-PLAYER_WIDTH) {x=SCREEN_WIDTH-PLAYER_WIDTH; xVol=0;}
+
+    if (x >= SCREEN_WIDTH-PLAYER_WIDTH) { // Loads in new map when the right of the screen is reached
+        if (mapNum<1)
+            ++mapNum; 
+        else
+            std::cout << "Last map reached.\n";
+        tileM->loadMap(mapNum, this); 
+        x=spawnPoint.x; 
+        y=spawnPoint.y;
+        savePoint.saved = false;
+    }
+
+    if (y <= 0) {y = 0; yVol=0;}
     this->sprite.setPosition(this->x, this->y);
     xVol=0;
 }
@@ -137,11 +158,12 @@ void Player::draw(sf::RenderWindow* window) {
 
 void Player::dead(TileManager* tileM) {
 
-    x=tileM->spawnPoint.x;
-    y=tileM->spawnPoint.y;
+    x=spawnPoint.x;
+    y=spawnPoint.y;
     yVol=0;
     xVol=0;
     savePoint.saved=false;
-    tileM->loadMap(2);
+    hasKey=false;
+    tileM->loadMap(mapNum, this);
 
 }

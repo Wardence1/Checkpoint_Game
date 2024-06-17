@@ -16,5 +16,12 @@ const float PLAYER_HEIGHT = 30; // const float PLAYER_HEIGHT = sprite.getTexture
 
 const char *GAME_TITLE = "Game";
 
+extern Maps& operator++(Maps& map) {
 
+    map = static_cast<Maps>(map + 1);
+
+    return map;
+}
+
+Maps mapNum = MAP1;
 

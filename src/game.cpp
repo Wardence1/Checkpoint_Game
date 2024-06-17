@@ -11,10 +11,9 @@ void Game::start() {
     window.setFramerateLimit(FPS);
     sf::Event event;
 
-    EntityManager eManager = EntityManager();
     TileManager tManager = TileManager();
-    tManager.loadMap(2); // Have to load map before making the player so the player spawns on the spawn point.
-    Player player = Player(tManager);
+    Player player = Player();
+    tManager.loadMap(mapNum, &player);
     while (running) {
         
         while (window.pollEvent(event))
@@ -27,13 +26,13 @@ void Game::start() {
 
         // Update
         player.update(&tManager);
-        eManager.update();
+        tManager.oManager.update(&player);
 
         // Render
         window.clear({48, 25, 34, 0});
 
         tManager.draw(&window);
-        eManager.draw(&window);
+        tManager.oManager.draw(&window);
         player.draw(&window);
 
         window.display();
